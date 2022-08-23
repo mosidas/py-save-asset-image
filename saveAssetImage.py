@@ -1,17 +1,22 @@
-import win32serviceutil
-import win32service
-import win32event
-import servicemanager
-import socket
+import logging
 import os
-import time
 import shutil
-import logging
+import socket
+import sys
 import time
-import logging
 
-from watchdog.observers import Observer
+script_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(script_path, "Lib\site-packages"))
+sys.path.append(os.path.join(script_path, "Lib\site-packages\win32\lib"))
+
+import servicemanager
+import win32event
+import win32service
+import win32serviceutil
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
+
+win32serviceutil.ServiceFramework._exe_name_ = os.path.join(os.path.join(script_path , "Scripts", 'pythonservice.exe'))
 
 logging.basicConfig(
     filename = '.\\saveAssetImage.log',
