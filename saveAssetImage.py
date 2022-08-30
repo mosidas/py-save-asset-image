@@ -15,6 +15,7 @@ import win32service
 import win32serviceutil
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
+from PIL import Image
 
 win32serviceutil.ServiceFramework._exe_name_ = os.path.join(os.path.join(script_path , "Scripts", 'pythonservice.exe'))
 
@@ -96,8 +97,11 @@ class ChangeHandler(FileSystemEventHandler):
             time.sleep(0.5)
         try:
             time.sleep(0.5)
-            shutil.copy(filepath, os.path.join(self.target_dir, filename + ".jpg"))
-            logging.info('%sをコピーしました' % filename)
+            im = Image.open(filepath)
+            width, height = im.size
+            if width > height :
+                shutil.copy(filepath, os.path.join(self.target_dir, filename + ".jpg"))
+                logging.info('%sをコピーしました' % filename)
         except Exception as e:
             logging.error(e)
 
